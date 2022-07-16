@@ -1,0 +1,27 @@
+{
+  "name": "discord-1-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules src/client.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosZoft/discord-1-1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CarlosZoft/discord-1-1/issues"
+  },
+  "homepage": "https://github.com/CarlosZoft/discord-1-1#readme",
+  "dependencies": {
+    "@discordjs/rest": "^0.5.0",
+    "discord-api-types": "^0.36.2",
+    "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1"
+  }
+}
