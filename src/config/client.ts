@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Client, Intents } from "discord.js";
-export const client = new Client({
+const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MEMBERS,
@@ -10,12 +10,14 @@ export const client = new Client({
   ],
 });
 
-async function loginStep() {
+async function login() {
   try {
     const logged = await client.login(process.env.DISCORD_TOKEN);
-    console.log(`Logged in as ${logged}`);
-  } catch (e) {
-    console.error(e);
+    console.log(`login successfully ${logged}`);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return client;
   }
 }
-loginStep();
+export { login };

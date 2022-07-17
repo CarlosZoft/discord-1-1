@@ -1,4 +1,5 @@
-import { createChannel, getMembersByIds, getGuild } from "../methods";
+import { Client } from "discord.js";
+import { Methods } from "../Methods";
 import { msgFormatter } from "../helpers/msgFormatter";
 
 interface ICreateGroupChatProps {
@@ -8,16 +9,16 @@ interface ICreateGroupChatProps {
   participants: string[];
 }
 
-const createGroupChat = async ({
-  categoryId,
-  chatName,
-  guildId,
-  participants,
-}: ICreateGroupChatProps) => {
+const createGroupChat = async (
+  client: Client,
+  { categoryId, chatName, guildId, participants }: ICreateGroupChatProps
+) => {
   try {
+    const service = new Methods(client);
+
     const [users, channel] = await Promise.all([
-      getMembersByIds(guildId, participants),
-      createChannel(guildId, categoryId, chatName),
+      service.getMembersByIds(guildId, participants),
+      service.createChannel(guildId, categoryId, chatName),
     ]);
 
     const actions = users?.map(async (user) => {
@@ -38,13 +39,13 @@ const createGroupChat = async ({
 
     if (actions) await Promise.all(actions);
 
-    await channel.send({
+    await channel?.send({
       embeds: [
         msgFormatter({
           color: "#0099ff",
           title: "Novo assunto!",
           description: `Conversem sobre: café\n\n${users
-            .map((user) => `${user}`)
+            ?.map((user) => `${user}`)
             .join("\n")}`,
         }),
       ],
@@ -54,4 +55,4 @@ const createGroupChat = async ({
   }
 };
 
-export { createGroupChat };
+export { createGroupChat, ICreateGroupChatProps };
