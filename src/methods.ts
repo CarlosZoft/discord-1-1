@@ -5,20 +5,28 @@ const getGuild = (guildId: string) => {
 };
 
 const getMembers = async (guildId: string) => {
-  const guild = getGuild(guildId);
-  if (!guild) {
-    throw new Error("No guild found");
+  try {
+    const guild = getGuild(guildId);
+    if (!guild) {
+      throw new Error("No guild found");
+    }
+    const members = await guild.members.fetch();
+    return members;
+  } catch (error) {
+    console.error(error);
   }
-  const members = await guild.members.fetch();
-  return members;
 };
 
 const getMembersByIds = async (guildId: string, ids: string[]) => {
-  const members = await getMembers(guildId);
-  const filteredMembers = members.filter((member) =>
-    ids.includes(String(member.id))
-  );
-  return filteredMembers;
+  try {
+    const members = await getMembers(guildId);
+    const filteredMembers = members?.filter((member) =>
+      ids.includes(String(member.id))
+    );
+    return filteredMembers;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const createChannel = async (
@@ -26,15 +34,21 @@ const createChannel = async (
   categoryId: string,
   name: string
 ) => {
-  const guild = getGuild(guildId);
-  if (!guild) {
-    throw new Error("No guild found");
+  try {
+    const guild = getGuild(guildId);
+    if (!guild) throw new Error("No guild found");
+
+    const category = guild.channels.cache.get(categoryId);
+    if (!category) throw new Error("No category found");
+
+    const channel = await guild.channels.create(name, {
+      type: "GUILD_TEXT",
+      parent: categoryId,
+    });
+    return channel;
+  } catch (error) {
+    console.error(error);
   }
-  const channel = await guild.channels.create(name, {
-    type: "GUILD_TEXT",
-    parent: categoryId,
-  });
-  return channel;
 };
 
 export { getGuild, getMembers, getMembersByIds, createChannel };
