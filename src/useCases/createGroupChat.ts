@@ -14,11 +14,11 @@ const createGroupChat = async (
   { categoryId, chatName, guildId, participants }: ICreateGroupChatProps
 ) => {
   try {
-    const service = new Methods(client);
+    const service = new Methods(client, guildId);
 
     const [users, channel] = await Promise.all([
-      service.getMembersByIds(guildId, participants),
-      service.createChannel(guildId, categoryId, chatName),
+      service.getMembersByIds(participants),
+      service.createChannel(categoryId, chatName),
     ]);
 
     const actions = users?.map(async (user) => {

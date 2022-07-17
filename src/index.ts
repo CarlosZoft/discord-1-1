@@ -8,7 +8,10 @@ const paramsToCreateGroupChat: ICreateGroupChatProps = {
   categoryId: String(process.env.CATEGORY_ID),
   chatName: "chat-teste",
   guildId: String(process.env.GUILD_ID),
-  participants: [],
+  participants: [
+    String(process.env.PERSON1_ID),
+    String(process.env.PERSON2_ID),
+  ],
 };
 
 (async () => {
